@@ -64,13 +64,13 @@ onClick={() => {
         <div className={classes.flexGrow} />
         <Hidden mdDown>
           <IconButton color="inherit">
-            <Badge
+            {/* <Badge
               badgeContent={notifications.length}
               color="primary"
               variant="dot"
             >
               <NotificationsIcon />
-            </Badge>
+            </Badge> */}
           </IconButton>
           <MyLogoutButton />
         </Hidden>

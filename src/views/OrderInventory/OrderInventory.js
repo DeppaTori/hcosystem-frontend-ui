@@ -76,9 +76,9 @@ const OrderInventory = () => {
     }
   };
 
-  const cancelAction = async (history,datatransaksi,dataIndex) =>  {
+  const cancelAction = async (dataCancel) =>  {
  
-
+    const {history,datatransaksi,dataIndex} = dataCancel;
 
   
     let {user,inventory,...updatedFields} = datatransaksi 

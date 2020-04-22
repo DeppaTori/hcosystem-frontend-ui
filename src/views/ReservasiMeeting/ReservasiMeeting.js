@@ -66,9 +66,9 @@ const ReservasiMeeting = () => {
     }
   };
 
-  const cancelAction = async (history,datatransaksi,dataIndex) =>  {
+  const cancelAction = async (dataCancel) =>  {
  
-
+    const {history,datatransaksi,dataIndex} = dataCancel;
 
   
     let {user,ruangMeeting,...updatedFields} = datatransaksi 

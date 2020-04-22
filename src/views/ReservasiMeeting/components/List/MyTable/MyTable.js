@@ -28,6 +28,7 @@ import {isAtasanPegawai,isHCO,isPegawai} from './../../../../../hakakses/hakakse
 import { useAuth } from "./../../../../../auth/auth";
 import { withRouter } from 'react-router-dom'
 import {moduleConfigs} from './../../../../ReservasiMeeting/ReservasiMeeting';
+import {MyModal} from './../../../../../components';
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,6 +60,8 @@ const MyTable = props => {
   const [modalShow, setModalShow] = React.useState(false);
   const [endpoint, setEndpoint] = React.useState(null);
   const [dataSupir, setDataSupir] = useState([]);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [dataModal, setDataModal] = React.useState({});
   const { authTokens } = useAuth();
 
  
@@ -119,6 +122,8 @@ const MyTable = props => {
   const showApproveButton = isAtasanPegawai(name);
 
   console.log(userInfo);
+
+
   
 
   const MyButton = withRouter(({ history,datatransaksi,dataIndex}) => (
@@ -135,7 +140,8 @@ const MyTable = props => {
     <Button
        color="secondary"
           variant="contained"
-      onClick={() => { cancelAction(history,datatransaksi,dataIndex) }}
+      // onClick={() => { cancelAction(history,datatransaksi,dataIndex) }}
+      onClick = {()=>handleOpenModal(history,datatransaksi,dataIndex)}
     >
      Cancel
     </Button>
@@ -150,6 +156,26 @@ const MyTable = props => {
      View
     </Button>
   ))
+
+  
+
+  const handleOpenModal = (history,datatransaksi,dataIndex) => {
+    setDataModal({
+      history:history,
+      datatransaksi:datatransaksi,
+      dataIndex:dataIndex
+    });
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleYesModal = () => {
+    setOpenModal(false);
+    cancelAction(dataModal);
+  };
 
 
   
@@ -168,7 +194,7 @@ const MyTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedData.length === data.length}
                       color="primary"
@@ -178,7 +204,7 @@ const MyTable = props => {
                       }
                       onChange={handleSelectAll}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>Tanggal Meeting</TableCell>
                   <TableCell>Ruang Meeting</TableCell>
                   <TableCell>Status Pemesanan</TableCell>
@@ -198,14 +224,14 @@ const MyTable = props => {
                     key={dt.id}
                     selected={selectedData.indexOf(dt.id) !== -1}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedData.indexOf(dt.id) !== -1}
                         color="primary"
                         onChange={event => handleSelectOne(event, dt.id)}
                         value="true"
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       <div className={classes.nameContainer}>
                      
@@ -262,6 +288,11 @@ const MyTable = props => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </CardActions>
+      <MyModal open={openModal} handleClose={handleCloseModal} handleYes={handleYesModal}
+     
+       title="Konfirmasi" content="Anda yakin untuk membatalkan reservasi ini?">
+
+      </MyModal>
     </Card>
   );
 };

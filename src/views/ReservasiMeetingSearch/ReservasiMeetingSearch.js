@@ -18,7 +18,7 @@ export const moduleConfigs = {
   server:'http://localhost:3000',
   name:'meeting-room-reservations',
   nameForLabelInfo:'Reservasi ruang meeting',
-  route:'ruang-meeting',
+  route:'reservasi-ruang-meeting',
   label:{
     addNew:'Silahkan menginput informasi reservasi'
   },
@@ -98,7 +98,7 @@ const ReservasiMeetingSearch = props => {
 
   const selectRuangMeeting = async (history,data,dataIndex) =>  {
 
-    history.push(`/${moduleConfigs.route}/tambah`,{id_ruangan:data.id_ruangan,nama_ruangan:data.nama_ruangan,waktu_meeting:tanggal,jenis_input:'tambah',dataDefault:null});
+    history.push(`/${moduleConfigs.route}/tambah`,{id_ruangan:data.id_ruangan,nama_ruangan:data.nama_ruangan,waktu_meeting:tanggal,jenis_input:'tambah',dataDefault:{}});
   };
 
   

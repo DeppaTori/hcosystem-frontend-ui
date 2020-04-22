@@ -168,7 +168,7 @@ const MyTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedData.length === data.length}
                       color="primary"
@@ -178,7 +178,7 @@ const MyTable = props => {
                       }
                       onChange={handleSelectAll}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>Nama Barang</TableCell>
                   <TableCell>Tipe Barang</TableCell>
                   <TableCell>Nomor Barang</TableCell>
@@ -196,14 +196,14 @@ const MyTable = props => {
                     key={dt.id}
                     selected={selectedData.indexOf(dt.id) !== -1}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedData.indexOf(dt.id) !== -1}
                         color="primary"
                         onChange={event => handleSelectOne(event, dt.id)}
                         value="true"
                       />
-                    </TableCell>
+                    </TableCell> */}
                 
                     <TableCell>
                       {dt.nama_barang}
