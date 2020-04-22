@@ -13,6 +13,7 @@ import { MyToolbar, MyTable, Budget,
 import axios from 'axios';
 import { Grid } from '@material-ui/core';
 import moment from 'moment';
+import {getBaseUrl} from './../../mymixin/mymixin';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const moduleConfigs = {
-  server:'http://localhost:3000',
+  server:getBaseUrl(),
   name:'-',
   nameForLabelInfo:'Laporan',
   route:'laporan',

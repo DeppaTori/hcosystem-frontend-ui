@@ -11,6 +11,7 @@ import { Button,   TextField,
 import { SearchInput } from 'components';
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
+import {getBaseUrl} from './../../../../../mymixin/mymixin';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -78,7 +79,7 @@ const MySelectSupir = props => {
  
  
     try {
-      const response = await axios.put(`http://localhost:3000/pemesanan-mobils/${datapemesanan.id}`,pemesananForAllocated);
+      const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${datapemesanan.id}`,pemesananForAllocated);
      
       alert('Pemesanan berhasil di alokasi ke supir.');
       parentSetData(newData);

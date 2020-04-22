@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import { MyToolbar, MyTable } from './components';
 import axios from 'axios';
+import {getBaseUrl} from './../../mymixin/mymixin';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const moduleConfigs = {
-  server:'http://localhost:3000',
+  server:getBaseUrl(),
   name:'user-management',
   nameForLabelInfo:'User',
   route:'user',

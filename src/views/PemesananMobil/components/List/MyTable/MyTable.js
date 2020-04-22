@@ -23,7 +23,7 @@ import {
 
 import { getInitials } from 'helpers';
 import axios from 'axios';
-import {getUserInfoFromToken} from './../../../../../mymixin/mymixin';
+import {getUserInfoFromToken,getBaseUrl} from './../../../../../mymixin/mymixin';
 import {isAtasanPegawai,isHCO,isPegawai} from './../../../../../hakakses/hakakses';
 import { useAuth } from "./../../../../../auth/auth";
 import { withRouter } from 'react-router-dom'
@@ -128,7 +128,7 @@ if(!isHCO(name)){
     const fetchData = async () => {
       const result = await axios({
         method: "get",
-        url: `http://localhost:3000/pemesanan-mobils?filter=${JSON.stringify(params)}`,
+        url: `${getBaseUrl()}/pemesanan-mobils?filter=${JSON.stringify(params)}`,
        
       });
       setData(result.data);
@@ -147,7 +147,7 @@ if(!isHCO(name)){
     //  const result = await axios(`http://localhost:3000/supirs`);
     const result = await axios({
       method: "get",
-      url: `http://localhost:3000/supirs?filter=${JSON.stringify(supirParams)}`,
+      url: `${getBaseUrl()}/supirs?filter=${JSON.stringify(supirParams)}`,
      
     })
       setDataSupir(result.data);
@@ -234,7 +234,7 @@ if(!isHCO(name)){
  
  
     try {
-      const response = await axios.put(`http://localhost:3000/pemesanan-mobils/${datapemesanan.id}`,pemesananForApprove);
+      const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${datapemesanan.id}`,pemesananForApprove);
        alert("Pemesanan Mobil berhasil di setujui.");
        setData(newData);
     } catch (e) {
@@ -268,7 +268,7 @@ if(!isHCO(name)){
     ];
 
     try {
-      const response = await axios.put(`http://localhost:3000/pemesanan-mobils/${datapemesanan.id}`,pemesananForCancel);
+      const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${datapemesanan.id}`,pemesananForCancel);
      
       alert("Pemesanan berhasil dibatalkan.");
       setData(newData);

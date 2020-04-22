@@ -9,3 +9,7 @@ export function getUserInfoFromToken(authTokens){
   var token = myArray[0].replace(/\"/g,"");
   return decode(token);
 }
+
+export function getBaseUrl(){
+  return 'http://localhost:3000';
+}

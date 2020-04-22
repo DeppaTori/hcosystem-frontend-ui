@@ -22,6 +22,7 @@ import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import decode from 'jwt-decode';
 import { useAuth } from "./../../../../auth/auth";
+import {getBaseUrl} from './../../../../mymixin/mymixin';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -126,7 +127,7 @@ const userInfo = decode(token);
 
   
     try {
-      const response = await axios.post('http://localhost:3000/pemesanan-mobils', {
+      const response = await axios.post(`${getBaseUrl()}/pemesanan-mobils`, {
         tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
         tipe_pemesanan: values.tipePemesanan,
         keterangan: values.keterangan,
@@ -177,7 +178,7 @@ const userInfo = decode(token);
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        'http://localhost:3000/mobils',
+        `${getBaseUrl()}/mobils`,
       );
       
       setDataMobil([{nomor_polisi:'',tipe_mobil:''}].concat(result.data));

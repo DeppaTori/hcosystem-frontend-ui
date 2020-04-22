@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { MyToolbar, MyTable } from './components';
 import axios from 'axios';
 import moment from 'moment';
+import {getBaseUrl} from './../../mymixin/mymixin';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const moduleConfigs = {
-  server:'http://localhost:3000',
+  server:getBaseUrl(),
   name:'meeting-room-reservations',
   nameForLabelInfo:'Reservasi ruang meeting',
   route:'reservasi-ruang-meeting',
