@@ -95,7 +95,7 @@ const MyTable = props => {
   const { authTokens } = useAuth();
 
   useEffect(() => {
-    const params = {
+    let params = {
       include: [
         {
           relation: "user"
@@ -109,6 +109,21 @@ const MyTable = props => {
         }
       ]
     };
+
+    const userInfo = getUserInfoFromToken(authTokens);
+const {id,name} = userInfo;
+let paramsHCO = params;
+if(!isHCO(name)){
+   params = {
+     ...params,
+     where:{
+      userId: {
+        ilike:id
+        
+        }
+    } 
+   }
+}
 
     const fetchData = async () => {
       const result = await axios({

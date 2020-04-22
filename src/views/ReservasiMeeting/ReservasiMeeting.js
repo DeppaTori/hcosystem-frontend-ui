@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/styles';
 import { MyToolbar, MyTable } from './components';
 import axios from 'axios';
 import moment from 'moment';
+import {getUserInfoFromToken} from '../../mymixin/mymixin';
+import { useAuth } from "../../auth/auth";
+import {isHCO} from '../../hakakses/hakakses';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +36,7 @@ const ReservasiMeeting = () => {
 
   const [data,setData] = useState([]);
   const [dataSupir,setDataSupir] = useState([]);
+  const { authTokens } = useAuth();
 
   const approveAction = async (history,datatransaksi,dataIndex) =>  {
 
@@ -99,20 +103,39 @@ const ReservasiMeeting = () => {
     }
   };
 
-  useEffect(() => {
-    const params = {
-      include: [
-        {
-          relation: "user"
-        
-        },
-     {
-          relation: "ruangMeeting"
-        }
-      ]
-    };
+  let params = {
+      
+    include: [
+      {
+        relation: "user"
+      
+      },
+   {
+        relation: "ruangMeeting"
+      }
+    ]
+  };
 
-   
+  
+
+  const userInfo = getUserInfoFromToken(authTokens);
+  const {id,name} = userInfo;
+  let paramsHCO = params;
+  if(!isHCO(name)){
+     params = {
+       ...params,
+       where:{
+        userId: {
+          ilike:id
+          
+          }
+      } 
+     }
+  }
+  
+
+  useEffect(() => {
+    
 
     const fetchData = async () => {
       const result = await axios({
@@ -127,17 +150,17 @@ const ReservasiMeeting = () => {
 
   const filterDataByDate = async (dataFilter) => {
     console.log(dataFilter);
-    const params = {
-      include: [
-        {
-          relation: "user"
+    // const params = {
+    //   include: [
+    //     {
+    //       relation: "user"
         
-        },
-     {
-          relation: "ruangMeeting"
-        }
-      ]
-    };
+    //     },
+    //  {
+    //       relation: "ruangMeeting"
+    //     }
+    //   ]
+    // };
 
     let fixParams = params;
 
@@ -145,6 +168,7 @@ const ReservasiMeeting = () => {
       fixParams = {
         ...params,
         where: {
+          ...params.where,
           and:[ { waktu_meeting: {
         gt:new Date(moment(dataFilter.startDate).subtract(1,'seconds').format())
        }},

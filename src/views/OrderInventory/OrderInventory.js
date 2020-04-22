@@ -221,6 +221,18 @@ const OrderInventory = () => {
       
     }
   };
+  }else{
+    
+    paramsHCO = {
+      ...paramsHCO,
+      where:{
+        ...paramsHCO.where,
+        userId: {
+          ilike:id
+          
+          }
+      }
+    }
   }
 
   paramsHCO = {
