@@ -178,6 +178,7 @@ const OrderInventory = () => {
   };
 
   const params = {
+
     include: [
       {
         relation: "user"
@@ -196,6 +197,7 @@ const OrderInventory = () => {
     paramsHCO = {
       ...params,
       where: {
+       
       or:[ {
         status_order: {
     ilike:moduleConfigs.statusList.approved
@@ -219,6 +221,17 @@ const OrderInventory = () => {
       
     }
   };
+  }
+
+  paramsHCO = {
+    ...paramsHCO,
+    where:{
+      ...paramsHCO.where,
+      type_order: {
+        ilike:"OUT"
+        
+        }
+    }
   }
 
   useEffect(() => {

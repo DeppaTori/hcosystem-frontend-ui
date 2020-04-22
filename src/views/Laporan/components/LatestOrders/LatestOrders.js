@@ -157,7 +157,7 @@ const LatestOrders = props => {
                     key={dt.id_order}
                   >
                     <TableCell>{dt.nomor_order}</TableCell>
-                    <TableCell>{dt.user.username}</TableCell>
+                    <TableCell>{dt.user?dt.user.username:""}</TableCell>
                     <TableCell>
                       {dt.inventory.nama_barang}
                     </TableCell>

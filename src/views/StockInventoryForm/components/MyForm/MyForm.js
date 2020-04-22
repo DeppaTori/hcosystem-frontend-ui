@@ -117,6 +117,18 @@ const MyForm = props => {
       label: 'Seragam'
     },
     {
+      value: 'ATK',
+      label: 'Atk'
+    },
+    {
+      value: 'Tumbler',
+      label: 'Tumbler'
+    },
+    {
+      value: 'Komputer',
+      label: 'Komputer'
+    },
+    {
       value: 'Kursi',
       label: 'Kursi'
     },

@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/styles';
+import palette from 'theme/palette';
 
 import { MyToolbar, MyTable, Budget,
   TotalUsers,
@@ -11,6 +12,7 @@ import { MyToolbar, MyTable, Budget,
   LatestOrders} from './components';
 import axios from 'axios';
 import { Grid } from '@material-ui/core';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,22 +43,36 @@ const LaporanSummary = () => {
   const [data,setData] = useState([]);
   const [dataInventori,setDataInventori] = useState([]);
   const [dataSupir,setDataSupir] = useState([]);
+  const [dataGraph,setDataGraph] = useState({
+    totalIn : 0,
+    totalOut:0
+  });
+  const [gdInventoryIn,setGdInventoryIn] = useState({
+    percentList:[],
+    labelList:[]
+  });
+  const [gdInventoryOut,setGdInventoryOut] = useState({
+    percentList:[],
+    labelList:[]
+  });
 
-  const gdInventoryIn = {
-    satu:{percent:15},
-    dua:{percent:20},
-    tiga:{percent:5},
-    empat:{percent:50},
-    lima:{percent:10}
-  }
+  const [barData,setBarData] = useState({
+      labels: [],
+      datasets: [
+        {
+          label: 'Inventory IN',
+          backgroundColor: palette.primary.main,
+          data: []
+        },
+        {
+          label: 'Inventory Out',
+          backgroundColor: palette.neutral,
+          data: []
+        }
+      ]
+    });
 
-  const gdInventoryOut = {
-    satu:{percent:30},
-    dua:{percent:12},
-    tiga:{percent:40},
-    empat:{percent:6},
-    lima:{percent:12}
-  }
+  
 
   const approveAction = async (history,datatransaksi,dataIndex) =>  {
 
@@ -123,15 +139,134 @@ const LaporanSummary = () => {
     }
   };
 
+  // const gdInventoryIn = {
+  //   satu:{percent:0},
+  //   dua:{percent:0},
+  //   tiga:{percent:0},
+  //   empat:{percent:0},
+  //   lima:{percent:0}
+  // }
+
+  // const gdInventoryOut = {
+  //   satu:{percent:30},
+  //   dua:{percent:12},
+  //   tiga:{percent:40},
+  //   empat:{percent:6},
+  //   lima:{percent:12}
+  // }
+
   useEffect(() => {
- 
+
+    const params = {
+
+      include: [
+      
+     {
+          relation: "inventory"
+        }
+      ]
+    };
+
+    const tipeInventoris = {};
+
+  
+
+
+
+    const groupingInventories = (data) => {
+        
+        data.forEach(dt=>{
+          // if(dt.inventory.tipe_barang in tipeInventoris){
+            
+          //   tipeInventoris[dt.inventory.tipe_barang]['jumlah'] =  tipeInventoris[dt.inventory.tipe_barang]['jumlah']+dt.jumlah
+          // }else{
+          //   tipeInventoris[dt.inventory.tipe_barang]=  { jumlah:dt.jumlah};
+         
+          // }
+ if(dt.type_order in tipeInventoris){
+            
+          //  tipeInventoris[dt.inventory.tipe_barang]['jumlah'] =  tipeInventoris[dt.inventory.tipe_barang]['jumlah']+dt.jumlah
+            if(dt.inventory.tipe_barang in tipeInventoris[dt.type_order]){
+              tipeInventoris[dt.type_order][dt.inventory.tipe_barang]['jumlah'] =  tipeInventoris[dt.type_order][dt.inventory.tipe_barang]['jumlah']+1;
+           
+            }else{
+
+              tipeInventoris[dt.type_order][dt.inventory.tipe_barang] = {
+                  jumlah:1
+              }
+              
+            }
+          }else{
+            tipeInventoris[dt.type_order] = {};
+            tipeInventoris[dt.type_order][dt.inventory.tipe_barang] = {
+              jumlah:1
+            }
+           
+         
+          }
+
+          
+        });
+    }
 
     const fetchData = async () => {
       const result = await axios({
         method: "get",
-        url: `${moduleConfigs.server}/order-inventories`,
+        url: `${moduleConfigs.server}/order-inventories?filter=${JSON.stringify(params)}`,
        
       });
+      const orderInventoryIn = result.data.filter(inv=>inv.type_order==="IN");
+      const orderInventoryOut = result.data.filter(inv=>inv.type_order==="OUT");
+    
+      setDataGraph({
+        ...dataGraph,
+        totalIn:orderInventoryIn.length,
+        totalOut:orderInventoryOut.length
+      });
+
+      groupingInventories(result.data);
+
+     
+      createGraphData(tipeInventoris.IN,gdInventoryIn,setGdInventoryIn,orderInventoryIn);
+      createGraphData(tipeInventoris.OUT,gdInventoryOut,setGdInventoryOut,orderInventoryOut);
+
+      
+
+      // console.log(tipeInventoris);
+      // console.log(gdInventoryIn);
+
+
+      /// bar data
+      const barLabel = [];
+      const barDataIn = [];
+      const barDataOut = [];
+      for(let [key,value] of Object.entries(tipeInventoris.IN)){
+        barLabel.push(key);
+        barDataIn.push(value.jumlah);
+        barDataOut.push(tipeInventoris.OUT.hasOwnProperty(key)?tipeInventoris.OUT[key]['jumlah']:0);
+     }
+
+     setBarData({
+       ...barData,
+       labels:barLabel,
+       datasets: [
+        {
+          label: 'Inventory IN',
+          backgroundColor: palette.primary.main,
+          data: barDataIn
+        },
+        {
+          label: 'Inventory Out',
+          backgroundColor: palette.neutral,
+          data: barDataOut
+        }
+      ]
+       
+     });
+
+     /// end bar data
+
+     
       setData(result.data);
     
     };
@@ -149,11 +284,174 @@ const LaporanSummary = () => {
     fetchDataInventory();
   }, []);
 
+  const generateReport = (resultData) => {
+
+    const tipeInventoris = {};
+
+    const orderInventoryIn = resultData.filter(inv=>inv.type_order==="IN");
+    const orderInventoryOut = resultData.filter(inv=>inv.type_order==="OUT");
+  
+    setDataGraph({
+      ...dataGraph,
+      totalIn:orderInventoryIn.length,
+      totalOut:orderInventoryOut.length
+    });
+
+    groupingInventories(resultData,tipeInventoris);
+
+   
+    createGraphData(tipeInventoris.IN,gdInventoryIn,setGdInventoryIn,orderInventoryIn);
+    createGraphData(tipeInventoris.OUT,gdInventoryOut,setGdInventoryOut,orderInventoryOut);
+
+    
+
+    // console.log(tipeInventoris);
+    // console.log(gdInventoryIn);
+
+
+    /// bar data
+    const barLabel = [];
+    const barDataIn = [];
+    const barDataOut = [];
+    for(let [key,value] of Object.entries(tipeInventoris.IN)){
+      barLabel.push(key);
+      barDataIn.push(value.jumlah);
+      barDataOut.push(tipeInventoris.OUT.hasOwnProperty(key)?tipeInventoris.OUT[key]['jumlah']:0);
+   }
+
+   setBarData({
+     ...barData,
+     labels:barLabel,
+     datasets: [
+      {
+        label: 'Inventory IN',
+        backgroundColor: palette.primary.main,
+        data: barDataIn
+      },
+      {
+        label: 'Inventory Out',
+        backgroundColor: palette.neutral,
+        data: barDataOut
+      }
+    ]
+     
+   });
+
+   /// end bar data
+  }
+
+  const groupingInventories = (data,tipeInventoris) => {
+        
+    data.forEach(dt=>{
+     
+if(dt.type_order in tipeInventoris){
+        
+      //  tipeInventoris[dt.inventory.tipe_barang]['jumlah'] =  tipeInventoris[dt.inventory.tipe_barang]['jumlah']+dt.jumlah
+        if(dt.inventory.tipe_barang in tipeInventoris[dt.type_order]){
+          tipeInventoris[dt.type_order][dt.inventory.tipe_barang]['jumlah'] =  tipeInventoris[dt.type_order][dt.inventory.tipe_barang]['jumlah']+1;
+       
+        }else{
+
+          tipeInventoris[dt.type_order][dt.inventory.tipe_barang] = {
+              jumlah:1
+          }
+          
+        }
+      }else{
+        tipeInventoris[dt.type_order] = {};
+        tipeInventoris[dt.type_order][dt.inventory.tipe_barang] = {
+          jumlah:1
+        }
+       
+     
+      }
+
+      
+    });
+}
+
+
+  const createGraphData = (tipeInventorisData,gdInventoryData,setGdInventoryFunc,orderInventoryTotal) => {
+    let percentList = [];
+      let labelList = [];
+      for(let [key,value] of Object.entries(tipeInventorisData)){
+        
+         percentList.push(Math.ceil((value.jumlah/orderInventoryTotal.length)*100));
+         labelList.push(key);
+      }
+
+      const gdInventoryDataTemp = {
+        ...gdInventoryData,
+        percentList:percentList,
+        labelList:labelList
+      };
+
+      setGdInventoryFunc(gdInventoryDataTemp);
+  }
+
+  // const barData = {
+  //   labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug'],
+  //   datasets: [
+  //     {
+  //       label: 'Inventory IN',
+  //       backgroundColor: palette.primary.main,
+  //       data: [18, 5, 19, 27, 29, 19, 20]
+  //     },
+  //     {
+  //       label: 'Inventory Out',
+  //       backgroundColor: palette.neutral,
+  //       data: [11, 20, 12, 29, 50, 25, 13]
+  //     }
+  //   ]
+  // };
+
+  const filterDataByDate = async (dataFilter) => {
+  
+    const params = {
+
+      include: [
+      
+     {
+          relation: "inventory"
+        }
+      ]
+    };
+
+    let fixParams = params;
+
+    if(dataFilter.startDate && dataFilter.endDate){
+      fixParams = {
+        ...params,
+        where: {
+          and:[ { tgl_input: {
+        gt:new Date(moment(dataFilter.startDate).subtract(1,'seconds').format())
+       }},
+       { tgl_input: {
+        lt:new Date(moment(dataFilter.endDate).add(1,"days").subtract(1,'seconds').format())
+       }}
+       ]
+          
+       }
+      }
+    }
+
+    const result = await axios({
+      method: "get",
+      url: `${moduleConfigs.server}/order-inventories?filter=${JSON.stringify(fixParams)}`,
+     
+    });
+
+    generateReport(result.data);
+    setData(result.data);
+  };
+
+
+
   
 
   return (
     <div className={classes.root}>
-      <MyToolbar />
+      <MyToolbar rangedDataInputOnClick={filterDataByDate} />
       <div className={classes.content}>
       <Grid
         container
@@ -178,7 +476,7 @@ const LaporanSummary = () => {
           xs={12}
         >
           {/* Inventori IN */}
-          <TotalUsers total={dataInventori.length} />
+          <TotalUsers total={dataGraph.totalIn} />
         </Grid>
         <Grid
           item
@@ -188,7 +486,7 @@ const LaporanSummary = () => {
           xs={12}
         >
            {/* Inventori Out */}
-          <TasksProgress total={dataInventori.length} />
+          <TasksProgress total={dataGraph.totalOut} />
         </Grid>
        
         <Grid
@@ -198,7 +496,7 @@ const LaporanSummary = () => {
           xl={9}
           xs={12}
         >
-          <LatestSales />
+          <LatestSales data={barData} />
         </Grid>
         <Grid
           item

@@ -101,6 +101,12 @@ const Laporan = () => {
   };
 
   const params = {
+    where : {
+      type_order: {
+        ilike:"OUT"
+        
+        },
+    },
     include: [
       {
         relation: "user"
@@ -137,6 +143,7 @@ const Laporan = () => {
       fixParams = {
         ...params,
         where: {
+          ...params.where,
           and:[ { tgl_input: {
         gt:new Date(moment(dataFilter.startDate).subtract(1,'seconds').format())
        }},

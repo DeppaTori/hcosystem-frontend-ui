@@ -50,7 +50,8 @@ const UsersByDevice = props => {
   const data = {
     datasets: [
       {
-        data: [graphData.satu.percent, graphData.dua.percent, graphData.tiga.percent,graphData.empat.percent,graphData.lima.percent],
+        // data: [graphData.satu.percent, graphData.dua.percent, graphData.tiga.percent,graphData.empat.percent,graphData.lima.percent],
+        data:graphData.percentList,
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -63,7 +64,8 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['ATK', 'Seragam', 'Tumbler','Empat','Lima']
+   // labels: ['ATK', 'Seragam', 'Tumbler','Empat','Lima']
+   labels:graphData.labelList
   };
 
   const options = {
@@ -88,38 +90,61 @@ const UsersByDevice = props => {
     }
   };
 
-  const devices = [
-    {
-      title: 'ATK',
-      value: graphData.satu.percent,
-      icon: <BookIcon />,
-      color: theme.palette.primary.main
-    },
-    {
-      title: 'Seragam',
-      value: graphData.dua.percent,
-      icon: <EmojiPeopleIcon />,
-      color: theme.palette.error.main
-    },
-    {
-      title: 'Tumbler',
-      value: graphData.tiga.percent,
+  const palettes = [
+    theme.palette.primary.main,
+    theme.palette.error.main,
+    theme.palette.warning.main,
+    theme.palette.success.main,
+    theme.palette.info.main];
+  const devices = [];
+
+  for(let i=0;i<graphData.percentList.length;i++){
+    devices.push(
+         {
+      title: graphData.labelList[i],
+      value: graphData.percentList[i],
       icon: <LocalDrinkIcon />,
-      color: theme.palette.warning.main
-    },
-    {
-      title: 'Meja',
-      value: graphData.empat.percent,
-      icon: <LocalDrinkIcon />,
-      color: theme.palette.warning.main
-    },
-    {
-      title: 'Komputer',
-      value: graphData.lima.percent,
-      icon: <LocalDrinkIcon />,
-      color: theme.palette.warning.main
+      color: palettes[i]
     }
-  ];
+    );
+  }
+
+  
+
+  // const devices = [
+  //   {
+  //     title: 'ATK',
+  //     value: graphData.satu.percent,
+  //     icon: <BookIcon />,
+  //     color: theme.palette.primary.main
+  //   },
+  //   {
+  //     title: 'Seragam',
+  //     value: graphData.dua.percent,
+  //     icon: <EmojiPeopleIcon />,
+  //     color: theme.palette.error.main
+  //   },
+  //   {
+  //     title: 'Tumbler',
+  //     value: graphData.tiga.percent,
+  //     icon: <LocalDrinkIcon />,
+  //     color: theme.palette.warning.main
+  //   },
+  //   {
+  //     title: 'Meja',
+  //     value: graphData.empat.percent,
+  //     icon: <LocalDrinkIcon />,
+  //     color: theme.palette.warning.main
+  //   },
+  //   {
+  //     title: 'Komputer',
+  //     value: graphData.lima.percent,
+  //     icon: <LocalDrinkIcon />,
+  //     color: theme.palette.warning.main
+  //   }
+  // ];
+
+
 
   return (
     <Card

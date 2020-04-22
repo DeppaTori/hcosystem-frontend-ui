@@ -65,7 +65,7 @@ const TotalUsers = props => {
             >
               INVENTORY IN
             </Typography>
-  <Typography variant="h3">2.540</Typography>
+  <Typography variant="h3">{total}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
