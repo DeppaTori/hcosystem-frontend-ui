@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button,TextField } from '@material-ui/core';
 
-import { SearchInput,DateInput} from 'components';
+import { SearchInput,DateInput,TimeInput} from 'components';
 import { withRouter } from 'react-router-dom';
 import {moduleConfigs} from './../../../../ReservasiMeeting/ReservasiMeeting';
 
@@ -64,6 +64,19 @@ const MyToolbar = props => {
        <DateInput
           className={classes.searchInput}
           placeholder="Search Ruang Meeting"
+          onChange={searchRuangMeeting}
+        />
+
+<TimeInput
+          className={classes.searchInput}
+         labelText="Jam Mulai"
+          onChange={searchRuangMeeting}
+        />
+
+<TimeInput
+          className={classes.searchInput}
+         labelText="Jam Selesai"
+          
           onChange={searchRuangMeeting}
         />
        

@@ -47,7 +47,7 @@ const MyToolbar = props => {
     <Button
        color="primary"
           variant="contained"
-      onClick={() => { history.push(`/${moduleConfigs.route}/tambah`,{jenis_input:'tambah'}) }}
+      onClick={() => { history.push(`/${moduleConfigs.route}/tambah`,{jenis_input:'tambah',dataDefault:{}}) }}
     >
      Tambah Ruang Meeting
     </Button>
@@ -73,10 +73,10 @@ const MyToolbar = props => {
        
       </div>
       <div className={classes.row}>
-        <SearchInput
+        {/* <SearchInput
           className={classes.searchInput}
           placeholder="Search Ruang Meeting"
-        />
+        /> */}
       </div>
     </div>
   );

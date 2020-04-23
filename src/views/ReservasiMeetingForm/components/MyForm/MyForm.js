@@ -80,7 +80,9 @@ const MyForm = props => {
     waktu_meeting:'',
     nama_ruangan:'',
     id_ruangan:0,
-    id_meeting_room_res:0
+    id_meeting_room_res:0,
+    jam_mulai:null,
+    jam_akhir:null
   });
 
   useEffect(() => {
@@ -98,6 +100,7 @@ const MyForm = props => {
     console.log(data.dataDefault);
 
     if(data.jenis_input==='ubah'){
+      moment.locale();
       setValues({
         ...values,
         waktu_meeting: data.dataDefault.waktu_meeting,
@@ -108,7 +111,9 @@ const MyForm = props => {
         id_ruangan:data.dataDefault.ruangMeetingId,
         agenda:data.dataDefault.agenda,
         deskripsi:data.dataDefault.deskripsi,
-        id_meeting_room_res:data.dataDefault.id_meeting_room_res
+        id_meeting_room_res:data.dataDefault.id_meeting_room_res,
+        jam_mulai:moment(data.dataDefault.start_meeting,"YYYY-MM-DD hh:mm:ss").format('hh:mm:ss'),
+        jam_akhir:moment(data.dataDefault.end_meeting,"YYYY-MM-DD hh:mm:ss").format('hh:mm:ss')
       });
     }
   }, []);
@@ -197,7 +202,7 @@ const MyForm = props => {
           
                 label="Tanggal Reservasi"
                 margin="dense"
-                name="agenda"
+                name="waktu_meeting"
                 InputProps={{
                   readOnly: true,
                 }}
@@ -217,7 +222,7 @@ const MyForm = props => {
           
                 label="Ruang Meeting"
                 margin="dense"
-                name="agenda"
+                name="nama_ruangan"
                 InputProps={{
                   readOnly: true,
                 }}
@@ -253,7 +258,7 @@ const MyForm = props => {
               <TextField
                 fullWidth
                
-                label="Waktu Pakai Ruang Meeting"
+                label="Tanggal Pakai Ruang Meeting"
                 margin="dense"
                 name="startMeeting"
                 type="date"
@@ -275,19 +280,43 @@ const MyForm = props => {
               <TextField
                 fullWidth
               
-                label="Waktu Selesai Ruang Meeting"
+                label="Jam Mulai"
                 margin="dense"
-                name="endMeeting"
-                type="date"
+                name="jam_mulai"
+                type="time"
                 onChange={handleChange}
                 required
-                value={values.endMeeting}
+                value={values.jam_mulai}
                 variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
             </Grid>
+
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+              
+                label="Jam Selesai"
+                margin="dense"
+                name="jam_akhir"
+                type="time"
+                onChange={handleChange}
+                required
+                value={values.jam_akhir}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+
+            
            
            
             

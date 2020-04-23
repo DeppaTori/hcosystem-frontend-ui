@@ -37,11 +37,17 @@ const userInfo = decode(token);
 
   
     try {
+      // console.log(values.waktu_meeting);
+      // console.log(values.jam_mulai);
+      // console.log(values.jam_akhir);
+      // console.log(moment(values.jam_mulai,"LT").format());
+
+      // console.log(moment(values.startMeeting+" "+values.jam_mulai+":00").format());
 
       const dataForRequest =  {
         waktu_meeting: moment(values.waktu_meeting,'YYYY-MM-DD').add(1, 'days').format(),
-        start_meeting: moment(values.startMeeting,'YYYY-MM-DD').add(1, 'days').format(),
-        end_meeting: moment(values.endMeeting,'YYYY-MM-DD').add(1, 'days').format(),
+        start_meeting: moment(values.startMeeting+" "+values.jam_mulai+":00").format(),
+        end_meeting: moment(values.startMeeting+" "+values.jam_akhir+":00").format(),
         agenda: values.agenda,
         deskripsi:values.deskripsi,
         status:moduleConfigs.statusList.available,

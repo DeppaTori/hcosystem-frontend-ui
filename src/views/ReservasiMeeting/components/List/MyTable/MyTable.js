@@ -211,7 +211,8 @@ const MyTable = props => {
                   <TableCell>Pemesan</TableCell>
                   <TableCell>Agenda</TableCell>
                   <TableCell>Start Meeting</TableCell>
-                  <TableCell>End Meeting</TableCell>
+                  <TableCell>Jam Mulai</TableCell>
+                  <TableCell>Jam Selesai</TableCell>
                   
                   <TableCell>&nbsp;</TableCell>
                 </TableRow>
@@ -249,7 +250,8 @@ const MyTable = props => {
                       {dt.agenda}
                     </TableCell>
                     <TableCell>{moment(dt.start_meeting).format('DD/MM/YYYY')}</TableCell>
-                    <TableCell>{moment(dt.end_meeting).format('DD/MM/YYYY')}</TableCell>
+                    <TableCell>{moment(dt.start_meeting,"YYYY-MM-DD hh:mm:ss").format('hh:mm:ss')}</TableCell>
+                    <TableCell>{moment(dt.end_meeting,"YYYY-MM-DD hh:mm:ss").format('hh:mm:ss')}</TableCell>
                   
                     <TableCell>
                     { (dt.userId===parseInt(id) && dt.status==='schedule_available')?(
