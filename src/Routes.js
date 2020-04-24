@@ -17,6 +17,7 @@ import {
   NotFound as NotFoundView,
   PemesananMobil as PemesananMobilView,
   PemesananMobilForm as PemesananMobilFormView,
+  PemesananMobilSearch as PemesananMobilSearchView,
   ReservasiMeeting as ReservasiMeetingView,
   ReservasiMeetingForm as ReservasiMeetingFormView,
   ReservasiMeetingSearch as ReservasiMeetingSearchView,
@@ -37,6 +38,7 @@ import {
   LaporanInventaris as LaporanInventarisView,
   Mobil as MobilView,
   MobilForm as MobilFormView,
+  LaporanDashboard as LaporanDashboardView,
 } from './views';
 
 import PrivateRoute from './auth/PrivateRoute';
@@ -172,6 +174,13 @@ const Routes = () => {
       />
 
 <PrivateRouteWithLayout
+        component={PemesananMobilSearchView}
+        exact
+        layout={MainLayout}
+        path="/pemesanan-mobil/search"
+      />
+
+<PrivateRouteWithLayout
         component={MobilView}
         exact
         layout={MainLayout}
@@ -256,12 +265,27 @@ const Routes = () => {
         path="/laporan-summary"
       />
 
-      <PrivateRouteWithLayout
+      {/* <PrivateRouteWithLayout
         component={LaporanView}
         exact
         layout={MainLayout}
         path="/laporan"
+      /> */}
+
+        <PrivateRouteWithLayout
+        component={LaporanView}
+        exact
+        layout={MainLayout}
+        path="/laporan-detail/inventaris"
       />
+
+<PrivateRouteWithLayout
+        component={LaporanDashboardView}
+        exact
+        layout={MainLayout}
+        path="/laporan"
+      />
+
        <PrivateRouteWithLayout
         component={LaporanInventarisView}
         exact

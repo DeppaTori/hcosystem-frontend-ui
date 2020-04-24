@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DateInput = props => {
-  const { className, onChange, style, ...rest } = props;
+  const { className, onChange,labelText,style, ...rest } = props;
 
   const classes = useStyles();
 
@@ -36,7 +36,7 @@ const DateInput = props => {
       className={clsx(classes.root, className)}
       style={style}
     >
-      <div>Pilih Tanggal Meeting</div>
+      <div>{labelText}</div>
       <CalendarTodayIcon className={classes.icon} />
       <TextField
     id="date"

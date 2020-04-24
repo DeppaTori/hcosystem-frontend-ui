@@ -5,7 +5,21 @@ import { MyToolbar, MyTable } from './components';
 import mockData from './data';
 import { useAuth } from "./../../auth/auth";
 import { isHCO } from './../../hakakses/hakakses';
-import {getUserInfoFromToken} from './../../mymixin/mymixin';
+import {getUserInfoFromToken,getBaseUrl} from './../../mymixin/mymixin';
+
+export const moduleConfigs = {
+  server:getBaseUrl(),
+  name:'pemesanan-mobils',
+  nameForLabelInfo:'Pemesanan Mobil',
+  route:'pemesanan-mobil',
+  label:{
+    addNew:'Silahkan menginput informasi pemesanan mobil'
+  },
+  statusList:{
+    submitted:'submitted'
+  }
+
+};
 
 
 const useStyles = makeStyles(theme => ({

@@ -43,7 +43,7 @@ const MyToolbar = props => {
     <Button
        color="primary"
           variant="contained"
-      onClick={() => { history.push('/pemesanan-mobil/tambah') }}
+      onClick={() => { history.push('/pemesanan-mobil/search') }}
     >
      Tambah Pemesanan
     </Button>

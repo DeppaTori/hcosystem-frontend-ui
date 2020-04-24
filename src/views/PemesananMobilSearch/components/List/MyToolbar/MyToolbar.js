@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button,TextField } from '@material-ui/core';
 
-import { SearchInput,DateInput,TimeInput} from 'components';
+import { TextInput,DateInput} from 'components';
 import { withRouter } from 'react-router-dom';
-import {moduleConfigs} from './../../../../ReservasiMeeting/ReservasiMeeting';
+import {moduleConfigs} from '../../../../ReservasiMeeting/ReservasiMeeting';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MyToolbar = props => {
-  const { className,history,searchRuangMeeting, ...rest } = props;
+  const { className,history,searchMasterData, ...rest } = props;
 
 
   const classes = useStyles();
@@ -56,29 +56,16 @@ const MyToolbar = props => {
     
       </div>
       <div className={classes.row}>
-      <div>1. Silahkan pilih ruang meeting</div>
+      <div>Silahkan pilih mobil</div>
     
       </div>
       <div className={classes.row}>
     
-       <DateInput
+      <DateInput
           className={classes.searchInput}
-          placeholder="Search Ruang Meeting"
-          onChange={searchRuangMeeting}
-          labelText="Pilih Tanggal Meeting"
-        />
-
-<TimeInput
-          className={classes.searchInput}
-         labelText="Jam Mulai"
-          onChange={searchRuangMeeting}
-        />
-
-<TimeInput
-          className={classes.searchInput}
-         labelText="Jam Selesai"
-          
-          onChange={searchRuangMeeting}
+          placeholder="Search"
+          onChange={searchMasterData}
+          labelText="Pilih tanggal pemakaian"
         />
        
       </div>

@@ -57,6 +57,9 @@ const MyForm = props => {
 
   const classes = useStyles();
 
+  const tanggalPemesananReadOnly = data.jenis_input==="tambah"?true:false;
+  const mobilReadOnly = data.jenis_input==="tambah"?true:false;
+
   const [values, setValues] = useState({
     firstName: '',
     lastName: '',
@@ -71,12 +74,12 @@ const MyForm = props => {
   });
 
   useEffect(() => {
-    setValues({
-      ...values,
-      mobil: data.mobil,
-      tipePemesanan:data.tipePemesanan,
-      tanggalPemesanan:data.tanggalPemesanan
-    });
+    // setValues({
+    //   ...values,
+    //   mobil: data.mobil,
+    //   tipePemesanan:data.tipePemesanan,
+    //   tanggalPemesanan:data.tanggalPemesanan
+    // });
 
   
 
@@ -88,6 +91,12 @@ const MyForm = props => {
         tipePemesanan: data.dataDefault.tipe_pemesanan,
         tanggalPemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD"),
         keterangan:data.dataDefault.keterangan,
+      });
+    }else{ // add new
+      setValues({
+        ...values,
+        mobil:data.dataDefault.mobilId,
+        tanggalPemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD")
       });
     }
   }, []);
@@ -262,7 +271,45 @@ const userInfo = decode(token);
                 InputLabelProps={{
                   shrink: true,
                 }}
+                InputProps={{
+                  readOnly: {tanggalPemesananReadOnly},
+                }}
               />
+            </Grid>
+
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Mobil"
+                margin="dense"
+                name="mobil"
+                // onChange={mobilReadOnly?null:handleChange}
+                required
+                select
+                // eslint-disable-next-line react/jsx-sort-props
+                SelectProps={{ native: true }}
+                value={values.mobil}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  readOnly: {mobilReadOnly},
+                }}
+              >
+                {dataMobil.map(option => (
+                  <option
+                    key={option.nomor_polisi}
+                    value={option.nomor_polisi}
+                  >
+                    {option.tipe_mobil} - {option.nomor_polisi}
+                  </option>
+                ))}
+              </TextField>
             </Grid>
 
             <Grid
@@ -297,37 +344,7 @@ const userInfo = decode(token);
               </TextField>
             </Grid>
            
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Mobil"
-                margin="dense"
-                name="mobil"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.mobil}
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              >
-                {dataMobil.map(option => (
-                  <option
-                    key={option.nomor_polisi}
-                    value={option.nomor_polisi}
-                  >
-                    {option.tipe_mobil} - {option.nomor_polisi}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
+            
             
             <Grid
               item

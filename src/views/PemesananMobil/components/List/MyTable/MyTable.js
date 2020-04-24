@@ -28,6 +28,7 @@ import {isAtasanPegawai,isHCO,isPegawai} from './../../../../../hakakses/hakakse
 import { useAuth } from "./../../../../../auth/auth";
 import { withRouter } from 'react-router-dom'
 import MySelectSupir from './../MySelectSupir';
+import {MyModal} from './../../../../../components';
 
 
 const useStyles = makeStyles(theme => ({
@@ -93,6 +94,8 @@ const MyTable = props => {
   const [data, setData] = useState([]);
   const [dataSupir, setDataSupir] = useState([]);
   const { authTokens } = useAuth();
+  const [openModal, setOpenModal] = React.useState(false);
+  const [dataModal, setDataModal] = React.useState({});
 
   useEffect(() => {
     let params = {
@@ -242,9 +245,9 @@ if(!isHCO(name)){
     }
   };
 
-  const cancelPemesanan = async (history,datapemesanan,dataIndex) =>  {
+  const cancelPemesanan = async (dataCancel) =>  {
  
-
+    const {history,datapemesanan,dataIndex} = dataCancel;
 
   
     let {user,mobil,...updatedFields} = datapemesanan 
@@ -291,7 +294,8 @@ if(!isHCO(name)){
     <Button
        color="secondary"
           variant="contained"
-      onClick={() => { cancelPemesanan(history,datapemesanan,dataIndex) }}
+     // onClick={() => { cancelPemesanan(history,datapemesanan,dataIndex) }}
+     onClick = {()=>handleOpenModal(history,datapemesanan,dataIndex)}
     >
      Cancel
     </Button>
@@ -308,7 +312,23 @@ if(!isHCO(name)){
   ))
 
 
- 
+  const handleOpenModal = (history,datapemesanan,dataIndex) => {
+    setDataModal({
+      history:history,
+      datapemesanan:datapemesanan,
+      dataIndex:dataIndex
+    });
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleYesModal = () => {
+    setOpenModal(false);
+    cancelPemesanan(dataModal);
+  };
 
 
  
@@ -447,6 +467,13 @@ if(!isHCO(name)){
           rowsPerPageOptions={[5, 10, 25]}
         />
       </CardActions>
+
+      <MyModal open={openModal} handleClose={handleCloseModal} handleYes={handleYesModal}
+     
+     title="Konfirmasi" content="Anda yakin untuk membatalkan pemesanan mobil ini?">
+
+    </MyModal>
+
     </Card>
   );
 };

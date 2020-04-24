@@ -10,6 +10,7 @@ export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
 export { default as PemesananMobil } from './PemesananMobil';
 export { default as PemesananMobilForm } from './PemesananMobilForm';
+export { default as PemesananMobilSearch } from './PemesananMobilSearch';
 export { default as ReservasiMeeting } from './ReservasiMeeting';
 export { default as ReservasiMeetingForm } from './ReservasiMeetingForm';
 export { default as ReservasiMeetingSearch } from './ReservasiMeetingSearch';
@@ -30,4 +31,5 @@ export { default as Laporan } from './Laporan';
 export { default as LaporanInventaris } from './LaporanInventaris';
 export { default as Mobil } from './Mobil';
 export { default as MobilForm } from './MobilForm';
+export { default as LaporanDashboard } from './LaporanDashboard';
 
