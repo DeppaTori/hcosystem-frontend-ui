@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyForm = props => {
-  const { className, ...rest } = props;
+  const { className,data, ...rest } = props;
   const { authTokens } = useAuth();
 
   const classes = useStyles();
@@ -66,8 +66,32 @@ const MyForm = props => {
     country: 'USA',
     mobil: '',
     tipePemesanan:'',
-    tanggalPemesanan:moment().format("YYYY-MM-DD")
+    tanggalPemesanan:moment().format("YYYY-MM-DD"),
+    keterangan:''
   });
+
+  useEffect(() => {
+    setValues({
+      ...values,
+      mobil: data.mobil,
+      tipePemesanan:data.tipePemesanan,
+      tanggalPemesanan:data.tanggalPemesanan
+    });
+
+  
+
+    if(data.jenis_input==='ubah'){
+      
+      setValues({
+        ...values,
+        mobil:data.dataDefault.mobilId,
+        tipePemesanan: data.dataDefault.tipe_pemesanan,
+        tanggalPemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD"),
+        keterangan:data.dataDefault.keterangan,
+      });
+    }
+  }, []);
+
 
   const [dataMobil, setDataMobil] = React.useState([]);
 
@@ -127,14 +151,26 @@ const userInfo = decode(token);
 
   
     try {
-      const response = await axios.post(`${getBaseUrl()}/pemesanan-mobils`, {
-        tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
-        tipe_pemesanan: values.tipePemesanan,
-        keterangan: values.keterangan,
-        mobilId:values.mobil,
-        userId:parseInt(userInfo.id),
-        status_pemesanan:'submitted',
-      });
+      if(data.jenis_input==="ubah"){
+        const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${data.dataDefault.id}`, {
+          tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
+          tipe_pemesanan: values.tipePemesanan,
+          keterangan: values.keterangan,
+          mobilId:values.mobil,
+          userId:parseInt(userInfo.id),
+          status_pemesanan:'submitted',
+        });
+      }else{
+        const response = await axios.post(`${getBaseUrl()}/pemesanan-mobils`, {
+          tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
+          tipe_pemesanan: values.tipePemesanan,
+          keterangan: values.keterangan,
+          mobilId:values.mobil,
+          userId:parseInt(userInfo.id),
+          status_pemesanan:'submitted',
+        });
+      }
+     
      // console.log(' Returned data:', response);
       handleOpen();
       history.push('/pemesanan-mobil');

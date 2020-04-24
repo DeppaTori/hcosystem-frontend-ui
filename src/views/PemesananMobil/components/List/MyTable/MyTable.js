@@ -297,6 +297,16 @@ if(!isHCO(name)){
     </Button>
   ))
 
+  const MyViewDetailButton = withRouter(({ history,datatransaksi,dataIndex}) => (
+    <Button
+       color="secondary"
+          variant="contained"
+      onClick={() => { history.push(`/pemesanan-mobil/view`,{jenis_input:'ubah',dataDefault:datatransaksi}) }}
+    >
+     View
+    </Button>
+  ))
+
 
  
 
@@ -416,6 +426,8 @@ if(!isHCO(name)){
                          ):(
                           <div></div>
                          )}
+
+                          <MyViewDetailButton datatransaksi={dt} dataIndex={dataIndex} />
                     </TableCell>
                   </TableRow>
                 ))}

@@ -10,8 +10,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PemesananMobilForm = () => {
+const PemesananMobilForm = props => {
   const classes = useStyles();
+  const {location,...rest} = props;
+
+  const data = location.state;
 
   return (
     <div className={classes.root}>
@@ -27,7 +30,7 @@ const PemesananMobilForm = () => {
           xl={8}
           xs={12}
         >
-          <MyForm />
+          <MyForm data={data} />
         </Grid>
       </Grid>
     </div>

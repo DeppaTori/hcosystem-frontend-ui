@@ -165,6 +165,13 @@ const Routes = () => {
       />
 
 <PrivateRouteWithLayout
+        component={PemesananMobilFormView}
+        exact
+        layout={MainLayout}
+        path="/pemesanan-mobil/view"
+      />
+
+<PrivateRouteWithLayout
         component={MobilView}
         exact
         layout={MainLayout}
