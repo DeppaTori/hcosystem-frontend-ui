@@ -5,7 +5,11 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
 import { SearchInput } from 'components';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import {moduleConfigs} from '../../../../Mobil/Mobil';
+import { useAuth } from "./../../../../../auth/auth";
+import { isHCO } from 'hakakses/hakakses';
+import {getUserInfoFromToken} from './../../../../../mymixin/mymixin';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -30,34 +34,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MyToolbar = props => {
-  const { className,history,isHCO, ...rest } = props;
+  const { className,history, ...rest } = props;
+
+  const { authTokens } = useAuth();
+
+  
 
 
   const classes = useStyles();
-
-  const gotoForm = () => {
-    history.push("/pemesanan-mobil/tambah");
-  };
 
   const MyButton = withRouter(({ history }) => (
     <Button
        color="primary"
           variant="contained"
-      onClick={() => { history.push('/pemesanan-mobil/tambah') }}
+      onClick={() => { history.push(`/${moduleConfigs.route}/tambah`,{jenis_input:'tambah',dataDefault:{}}) }}
     >
-     Tambah Pemesanan
+     Tambah Mobil
     </Button>
   ))
 
-  const MyMobilButton = withRouter(({ history }) => (
-    <Button
-       color="primary"
-          variant="contained"
-      onClick={() => { history.push('/mobil') }}
-    >
-     Mobil
-    </Button>
-  ))
+  const userInfo = getUserInfoFromToken(authTokens);
+  const {id,name} = userInfo;
+  const showMyAddButton = isHCO(name);
 
   return (
     <div
@@ -65,28 +63,19 @@ const MyToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
-        <span className={classes.spacer} /> 
+        <span className={classes.spacer} />
        
         <MyButton
         >
          
-      
         </MyButton>
-
-        {isHCO? (
-           <MyMobilButton>
-            
-           </MyMobilButton>
-        ):(
-          <div></div>
-        )}
 
        
       </div>
       <div className={classes.row}>
         {/* <SearchInput
           className={classes.searchInput}
-          placeholder="Search Pemesanan"
+          placeholder="Search Ruang Meeting"
         /> */}
       </div>
     </div>

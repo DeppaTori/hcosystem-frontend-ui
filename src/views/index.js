@@ -28,4 +28,6 @@ export { default as UserForm } from './UserForm';
 export { default as LaporanSummary } from './LaporanSummary';
 export { default as Laporan } from './Laporan';
 export { default as LaporanInventaris } from './LaporanInventaris';
+export { default as Mobil } from './Mobil';
+export { default as MobilForm } from './MobilForm';
 
