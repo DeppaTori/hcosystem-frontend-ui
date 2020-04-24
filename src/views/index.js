@@ -32,4 +32,7 @@ export { default as LaporanInventaris } from './LaporanInventaris';
 export { default as Mobil } from './Mobil';
 export { default as MobilForm } from './MobilForm';
 export { default as LaporanDashboard } from './LaporanDashboard';
+export { default as LaporanDetRgMeeting } from './LaporanDetRgMeeting';
+export { default as LaporanDetCatering } from './LaporanDetCatering';
+export { default as LaporanDetMobil } from './LaporanDetMobil';
 

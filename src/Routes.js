@@ -39,6 +39,9 @@ import {
   Mobil as MobilView,
   MobilForm as MobilFormView,
   LaporanDashboard as LaporanDashboardView,
+  LaporanDetRgMeeting as LaporanDetRgMeetingView,
+  LaporanDetCatering as LaporanDetCateringView,
+  LaporanDetMobil as LaporanDetMobilView,
 } from './views';
 
 import PrivateRoute from './auth/PrivateRoute';
@@ -277,6 +280,27 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/laporan-detail/inventaris"
+      />
+
+<PrivateRouteWithLayout
+        component={LaporanDetRgMeetingView}
+        exact
+        layout={MainLayout}
+        path="/laporan-detail/ruang-meeting"
+      />
+
+<PrivateRouteWithLayout
+        component={LaporanDetCateringView}
+        exact
+        layout={MainLayout}
+        path="/laporan-detail/catering"
+      />
+
+<PrivateRouteWithLayout
+        component={LaporanDetMobilView}
+        exact
+        layout={MainLayout}
+        path="/laporan-detail/mobil"
       />
 
 <PrivateRouteWithLayout
