@@ -61,17 +61,24 @@ const MyForm = props => {
   const mobilReadOnly = data.jenis_input==="tambah"?true:false;
 
   const [values, setValues] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    state: '',
-    country: 'USA',
+    id:0,
     mobil: '',
-    tipePemesanan:'',
-    tanggalPemesanan:moment().format("YYYY-MM-DD"),
-    keterangan:''
+    tipe_pemesanan:'',
+    tanggal_pemesanan:moment().format("YYYY-MM-DD"),
+    keterangan:'',
+    tipe_perjalanan:'',
+    barang_ekpedisi:'',
+    lokasi_tujuan:'',
+    tipe_transportasi:''
+
   });
+
+  const [hideInput, setHideInput] = useState({
+    tipe_perjalanan:false,
+    barang_ekpedisi:false,
+    tipe_transportasi:false
+  });
+
 
   useEffect(() => {
     // setValues({
@@ -84,20 +91,24 @@ const MyForm = props => {
   
 
     if(data.jenis_input==='ubah'){
+
+      const dataToForm = data.dataDefault;
       
       setValues({
-        ...values,
+        ...dataToForm,
         mobil:data.dataDefault.mobilId,
-        tipePemesanan: data.dataDefault.tipe_pemesanan,
-        tanggalPemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD"),
-        keterangan:data.dataDefault.keterangan,
+        tanggal_pemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD")
       });
+
+      tooggleTipePemesanan(data.dataDefault.tipe_pemesanan);
+
     }else{ // add new
       setValues({
         ...values,
         mobil:data.dataDefault.mobilId,
-        tanggalPemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD")
+        tanggal_pemesanan:moment(data.dataDefault.tanggal_pemesanan).format("YYYY-MM-DD")
       });
+      tooggleTipePemesanan('-');
     }
   }, []);
 
@@ -109,6 +120,32 @@ const MyForm = props => {
       ...values,
       [event.target.name]: event.target.value
     });
+
+    if(event.target.name==="tipe_pemesanan"){
+      tooggleTipePemesanan(event.target.value);
+    }
+  };
+
+  const tooggleTipePemesanan = (value) => {
+    if(value==="dinas"){
+      setHideInput({
+        tipe_perjalanan:false,
+        barang_ekpedisi:true,
+        tipe_transportasi:false
+      });
+    }else if(value==="ekpedisi"){
+      setHideInput({
+        tipe_perjalanan:true,
+        barang_ekpedisi:false,
+        tipe_transportasi:true
+      });
+    }else{
+      setHideInput({
+        tipe_perjalanan:true,
+        barang_ekpedisi:true,
+        tipe_transportasi:true
+      });
+    }
   };
 
   const states = [
@@ -141,6 +178,36 @@ const MyForm = props => {
     },
   ];
 
+  const tipePerjalanans = [
+    {
+      value: '',
+      label: ''
+    },
+    {
+      value: 'PulangPergi',
+      label: 'Pulang Pergi'
+    },
+    {
+      value: 'drop',
+      label: 'Drop'
+    },
+  ];
+
+  const tipeTransportasis = [
+    {
+      value: '',
+      label: ''
+    },
+    {
+      value: 'mobildinas',
+      label: 'Mobil Dinas'
+    },
+    {
+      value: 'Taxi',
+      label: 'Taxi'
+    },
+  ];
+
   const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
 
@@ -158,26 +225,33 @@ var myArray = authTokens.match(re);
 var token = myArray[0].replace(/\"/g,"");
 const userInfo = decode(token);
 
+
+
   
     try {
+
+      const {id,mobil,user,...prepareValues} = values;
+
+      const editValues = {
+        ...prepareValues,
+        tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
+        userId:parseInt(userInfo.id),
+        status_pemesanan:'submitted',
+        mobilId:values.mobil
+      }
+      
+      const addValues = {
+        ...prepareValues,
+        tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
+        userId:parseInt(userInfo.id),
+        status_pemesanan:'submitted',
+        mobilId:values.mobil
+      }
+
       if(data.jenis_input==="ubah"){
-        const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${data.dataDefault.id}`, {
-          tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
-          tipe_pemesanan: values.tipePemesanan,
-          keterangan: values.keterangan,
-          mobilId:values.mobil,
-          userId:parseInt(userInfo.id),
-          status_pemesanan:'submitted',
-        });
+        const response = await axios.put(`${getBaseUrl()}/pemesanan-mobils/${data.dataDefault.id}`, addValues);
       }else{
-        const response = await axios.post(`${getBaseUrl()}/pemesanan-mobils`, {
-          tanggal_pemesanan: moment(values.tanggalPemesanan).format(),
-          tipe_pemesanan: values.tipePemesanan,
-          keterangan: values.keterangan,
-          mobilId:values.mobil,
-          userId:parseInt(userInfo.id),
-          status_pemesanan:'submitted',
-        });
+        const response = await axios.post(`${getBaseUrl()}/pemesanan-mobils`,addValues);
       }
      
      // console.log(' Returned data:', response);
@@ -264,14 +338,15 @@ const userInfo = decode(token);
                 name="tanggal_pemesanan"
                 type="date"
                 onChange={handleChange}
-                defaultValue="2020-04-04"
+                
                 required
-                value={values.tanggalPemesanan}
+                value={values.tanggal_pemesanan}
                 variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 InputProps={{
+                  
                   readOnly: {tanggalPemesananReadOnly},
                 }}
               />
@@ -321,13 +396,13 @@ const userInfo = decode(token);
                 fullWidth
                 label="Tipe pemesanan"
                 margin="dense"
-                name="tipePemesanan"
+                name="tipe_pemesanan"
                 onChange={handleChange}
                 required
                 select
                 // eslint-disable-next-line react/jsx-sort-props
                 SelectProps={{ native: true }}
-                value={values.tipePemesanan}
+                value={values.tipe_pemesanan}
                 variant="outlined"
                 InputLabelProps={{
                   shrink: true,
@@ -346,6 +421,128 @@ const userInfo = decode(token);
            
             
             
+            {!hideInput.tipe_perjalanan?
+            (
+<Grid
+              item
+              md={12}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Tipe Perjalanan"
+                margin="dense"
+                name="tipe_perjalanan"
+                onChange={handleChange}
+                required
+                select
+                // eslint-disable-next-line react/jsx-sort-props
+                SelectProps={{ native: true }}
+                value={values.tipe_perjalanan}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              >
+                {tipePerjalanans.map(option => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            ):
+          (<div></div>)}
+
+            
+
+            {!hideInput.barang_ekpedisi?
+            (
+              <Grid
+              item
+              md={12}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+          
+                label="Barang yang dikirim"
+                margin="dense"
+                name="barang_ekpedisi"
+                onChange={handleChange}
+                required
+                value={values.barang_ekpedisi}
+                variant="outlined"
+              />
+            </Grid>
+            ):(
+            <div></div>
+              )
+          }
+
+
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+          
+                label="Lokasi Tujuan"
+                margin="dense"
+                name="lokasi_tujuan"
+                onChange={handleChange}
+                required
+                value={values.lokasi_tujuan}
+                variant="outlined"
+              />
+            </Grid>
+
+            
+{!hideInput.tipe_transportasi?(
+ <Grid
+ item
+ md={12}
+ xs={12}
+>
+ <TextField
+   fullWidth
+   label="Tipe Transportasi"
+   margin="dense"
+   name="tipe_transportasi"
+   onChange={handleChange}
+   required
+   select
+   // eslint-disable-next-line react/jsx-sort-props
+   SelectProps={{ native: true }}
+   value={values.tipe_transportasi}
+   variant="outlined"
+   InputLabelProps={{
+     shrink: true,
+   }}
+ >
+   {tipeTransportasis.map(option => (
+     <option
+       key={option.value}
+       value={option.value}
+     >
+       {option.label}
+     </option>
+   ))}
+ </TextField>
+</Grid>
+):(
+  <div></div>
+)}
+
+           
+
+           
+
             <Grid
               item
               md={12}
