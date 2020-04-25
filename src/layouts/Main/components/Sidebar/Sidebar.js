@@ -87,8 +87,23 @@ const Sidebar = props => {
       icon: <DirectionCarIcon />
     },
     {
-      title: 'Laporan',
-      href: '/laporan',
+      title: 'Laporan Pemesanan Barang',
+      href: '/laporan-detail/inventaris',
+      icon: <AssessmentIcon />
+    },
+    {
+      title: 'Laporan Pemesanan Ruangan',
+      href: '/laporan-detail/ruang-meeting',
+      icon: <AssessmentIcon />
+    },
+    {
+      title: 'Laporan Pemesanan Catering',
+      href: '/laporan-detail/catering',
+      icon: <AssessmentIcon />
+    },
+    {
+      title: 'Laporan Pemesanan Mobil',
+      href: '/laporan-detail/mobil',
       icon: <AssessmentIcon />
     },
     {

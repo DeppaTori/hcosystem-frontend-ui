@@ -9,7 +9,7 @@ const roles = {
 const moduleAccess = {
   pegawai: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil'],
   atasanPegawai: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil'],
-  hco: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil','/laporan'],
+  hco: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil','/laporan-detail/inventaris','/laporan-detail/ruang-meeting','/laporan-detail/catering','/laporan-detail/mobil'],
   admin: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil','/user'],
   atasanHCO: ['/dashboard','/order-inventory','/reservasi-ruang-meeting','/catering','/pemesanan-mobil','/laporan-summary']
 }
