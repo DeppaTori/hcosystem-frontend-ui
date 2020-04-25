@@ -384,7 +384,7 @@ if(!isHCO(name)){
                       onChange={handleSelectAll}
                     />
                   </TableCell> */}
-                  <TableCell>Tanggal Pemesanan</TableCell>
+                  <TableCell>Tanggal Pemakaian</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Pemesan</TableCell>
                   <TableCell>Tipe Pemesanan</TableCell>
