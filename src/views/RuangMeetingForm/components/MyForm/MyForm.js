@@ -23,7 +23,7 @@ import moment from 'moment'
 
 
 
-import {moduleConfigs} from '../../../ReservasiMeeting/ReservasiMeeting';
+import {moduleConfigs} from '../../../RuangMeeting/RuangMeeting';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
