@@ -61,11 +61,7 @@ const MyForm = props => {
 
   const classes = useStyles();
   
-  let nomorPolisiReadOnly = false;
-
-  if(data.jenis_input !== "tambah"){
-    nomorPolisiReadOnly = true;
-  }
+  
 
   const [values, setValues] = useState({
     nomor_polisi:'',
@@ -74,6 +70,12 @@ const MyForm = props => {
     jumlah_kursi:'',
     status_mobil:''
   });
+
+  const [readOnlys, setReadOnlys] = useState({
+    nomor_polisiRO:true
+  });
+
+  
 
   useEffect(() => {
     setValues({
@@ -85,6 +87,13 @@ const MyForm = props => {
       status_mobil:data.dataDefault.status_mobil
       
     });
+
+    if(data.jenis_input === "tambah"){
+      setReadOnlys({
+        ...readOnlys,
+        nomor_polisiRO:false
+      });
+    }
 
   }, []);
 
@@ -193,7 +202,7 @@ const MyForm = props => {
     },
   ];
 
- 
+  const  {nomor_polisiRO} = readOnlys;
 
 
   return (
@@ -229,7 +238,7 @@ const MyForm = props => {
                 margin="dense"
                 name="nomor_polisi"
                 InputProps={{
-                  readOnly: {nomorPolisiReadOnly},
+                  readOnly: nomor_polisiRO,
                 }}
                 onChange={handleChange}
                 required
