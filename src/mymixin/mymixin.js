@@ -11,6 +11,6 @@ export function getUserInfoFromToken(authTokens){
 }
 
 export function getBaseUrl(){
-  return 'https://quiet-mesa-17901.herokuapp.com';
- // return 'http://localhost:3000';
+  //return 'https://quiet-mesa-17901.herokuapp.com';
+ return 'http://localhost:3000';
 }

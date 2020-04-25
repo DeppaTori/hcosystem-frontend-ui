@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 export const moduleConfigs = {
   server:getBaseUrl(),
-  name:'user-management',
+  name:'usermanages',
   nameForLabelInfo:'User',
   route:'user',
   label:{
@@ -66,35 +66,31 @@ const User = () => {
     }
   };
 
-  const cancelAction = async (history,datatransaksi,dataIndex) =>  {
+  const cancelAction = async (cancelData) =>  {
  
 
+    const {history,datatransaksi,dataIndex} = cancelData;
+ 
 
-  
-    // let {user,ruangMeeting,...updatedFields} = datatransaksi 
-    // const transaksiForCancel = {
-    //   ...updatedFields,
-    //   status: 'cancelled'
-    // }
+    if([1,2,3,4,5].includes(parseInt(datatransaksi.id))){
+      alert("Anda tidak diizinkan melakukan ini!");
+    }else{
+        const newData = [
+        ...data.slice(0,dataIndex),
+        ...data.slice(dataIndex+1)
+      ];
 
-    // const cancelForTable = {
-    //   ...datatransaksi,
-    //   status: 'cancelled',
-    // }
-
-    const newData = [
-      ...data.slice(0,dataIndex),
-      ...data.slice(dataIndex+1)
-    ];
-
-    try {
-      const response = await axios.delete(`${moduleConfigs.server}/${moduleConfigs.name}/${datatransaksi.id}`);
-     
-      alert(`${moduleConfigs.nameForLabelInfo} berhasil dihapus.`);
-      setData(newData);
-    } catch (e) {
-      console.log(`Axios request failed: ${e}`);
+      try {
+        const response = await axios.delete(`${moduleConfigs.server}/${moduleConfigs.name}/${datatransaksi.id}`);
+      
+        alert(`${moduleConfigs.nameForLabelInfo} berhasil dihapus.`);
+        setData(newData);
+      } catch (e) {
+        console.log(`Axios request failed: ${e}`);
+      }
     }
+
+   
   };
 
   useEffect(() => {

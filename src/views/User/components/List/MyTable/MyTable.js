@@ -28,6 +28,7 @@ import {isAtasanPegawai,isHCO,isPegawai} from '../../../../../hakakses/hakakses'
 import { useAuth } from "../../../../../auth/auth";
 import { withRouter } from 'react-router-dom'
 import {moduleConfigs} from '../../../../User/User';
+import {MyModal} from './../../../../../components';
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,6 +60,8 @@ const MyTable = props => {
   const [modalShow, setModalShow] = React.useState(false);
   const [endpoint, setEndpoint] = React.useState(null);
   const [dataSupir, setDataSupir] = useState([]);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [dataModal, setDataModal] = React.useState({});
   const { authTokens } = useAuth();
 
  
@@ -135,7 +138,8 @@ const MyTable = props => {
     <Button
        color="secondary"
           variant="contained"
-      onClick={() => { cancelAction(history,datatransaksi,dataIndex) }}
+      // onClick={() => { cancelAction(history,datatransaksi,dataIndex) }}
+      onClick = {()=>handleOpenModal(history,datatransaksi,dataIndex)}
     >
      Delete
     </Button>
@@ -145,11 +149,37 @@ const MyTable = props => {
     <Button
        color="secondary"
           variant="contained"
-      onClick={() => { history.push(`/${moduleConfigs.route}/view`,{jenis_input:'ubah',dataDefault:datatransaksi}) }}
+      onClick={() => { 
+        if([1,2,3,4,5].includes(parseInt(datatransaksi.id))){
+          alert("Anda tidak tidak memiliki izin ini!");
+        }else{
+          history.push(`/${moduleConfigs.route}/view`,{jenis_input:'ubah',dataDefault:datatransaksi}); 
+     
+        }
+      }}
     >
      View
     </Button>
   ))
+
+   
+  const handleOpenModal = (history,datatransaksi,dataIndex) => {
+    setDataModal({
+      history:history,
+      datatransaksi:datatransaksi,
+      dataIndex:dataIndex
+    });
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleYesModal = () => {
+    setOpenModal(false);
+    cancelAction(dataModal);
+  };
 
 
   
@@ -239,6 +269,13 @@ const MyTable = props => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </CardActions>
+
+      <MyModal open={openModal} handleClose={handleCloseModal} handleYes={handleYesModal}
+     
+     title="Konfirmasi" content="Anda yakin untuk menghapus user ini?">
+
+    </MyModal>
+
     </Card>
   );
 };
